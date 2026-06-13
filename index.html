@@ -214,6 +214,42 @@ textarea,input,button,select{font-family:inherit}
 .toast{position:fixed;bottom:20px;right:20px;background:var(--s1);border:1px solid var(--ac);color:var(--t1);padding:10px 16px;border-radius:var(--r2);font-size:12px;transform:translateY(120%);transition:transform .3s;z-index:200;max-width:340px}
 .toast.show{transform:translateY(0)}
 
+/* ═══ DATA DASHBOARD ═══ */
+.metric-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.metric-nav .dd{font-size:14px;font-weight:600;padding:6px 14px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);position:relative;cursor:pointer;min-width:140px;text-align:center}
+.metric-nav .dd:hover{border-color:var(--ac)}
+.metric-nav .dd input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.metric-nav button{background:var(--s1);border:1px solid var(--bd);color:var(--t2);padding:6px 10px;border-radius:var(--r2);cursor:pointer;font-size:12px;min-width:32px}
+.metric-nav button:hover{border-color:var(--ac);color:var(--ac)}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:16px}
+.mc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px}
+.mc-label{font-size:11px;color:var(--t3);margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.mc-label .mc-unit{font-size:10px;color:var(--t4)}
+.mc-input{display:flex;align-items:center;gap:6px}
+.mc-input input[type=number]{width:100%;background:var(--s2);border:1px solid var(--bd);color:var(--t1);padding:6px 10px;border-radius:var(--r3);font-size:16px;font-weight:600;text-align:center;-moz-appearance:textfield}
+.mc-input input::-webkit-outer-spin-button,.mc-input input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.mc-input input:focus{outline:none;border-color:var(--ac)}
+.mc-trend{display:flex;align-items:flex-end;gap:1px;height:28px;margin-top:8px}
+.mc-trend .bar{flex:1;border-radius:1px;min-width:3px;transition:height .3s;opacity:.7}
+.mc-trend .bar:last-child{opacity:1}
+.mc-trend .bar:hover{opacity:1}
+.mc-delta{font-size:11px;margin-top:4px;text-align:right}
+.mc-delta.up{color:var(--rd)}.mc-delta.down{color:var(--gn)}.mc-delta.neutral{color:var(--t3)}
+.mc-delta.up-good{color:var(--gn)}.mc-delta.down-bad{color:var(--rd)}
+.data-section{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.data-section .ds-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.data-section .ds-hd:hover{background:var(--s2)}
+.data-section .ds-title{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.data-section .ds-title .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.data-section .ds-body{max-height:0;overflow:hidden;transition:max-height .4s}
+.data-section.open .ds-body{max-height:5000px}
+.data-section.open .sec-arrow{transform:rotate(180deg)}
+.data-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.data-table th{text-align:left;padding:6px 12px;color:var(--t3);border-bottom:1px solid var(--bd);font-weight:500;position:sticky;top:0;background:var(--s1)}
+.data-table td{padding:6px 12px;border-bottom:1px solid var(--bd);color:var(--t2)}
+.data-table tr:hover td{background:var(--s2)}
+.data-table .val{font-weight:600;color:var(--t1);text-align:center}
+
 /* Sync */
 .sync-status{display:flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;border-radius:20px;background:var(--s2);border:1px solid var(--bd);cursor:pointer;transition:all .2s;color:var(--t3)}
 .sync-status:hover{border-color:var(--ac)}
@@ -233,12 +269,52 @@ textarea,input,button,select{font-family:inherit}
 /* Empty state */
 .empty{text-align:center;color:var(--t3);padding:50px 20px;font-size:13px}
 
+/* Interview Questions */
+.iv-toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.iv-toolbar input{flex:1;min-width:180px;background:var(--s1);border:1px solid var(--bd);color:var(--t1);padding:9px 14px;border-radius:var(--r2);font-size:13px}
+.iv-toolbar input:focus{outline:none;border-color:var(--ac)}
+.iv-toolbar input::placeholder{color:var(--t4)}
+.iv-toolbar select{background:var(--s1);border:1px solid var(--bd);color:var(--t2);padding:8px 12px;border-radius:var(--r2);font-size:12px;cursor:pointer}
+.iv-toolbar select:focus{outline:none;border-color:var(--ac)}
+.iv-stats{font-size:11px;color:var(--t3);margin-left:auto;white-space:nowrap}
+.iv-stats b{color:var(--gn)}
+.iv-cat{margin-bottom:16px}
+.iv-cat-hd{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);cursor:pointer;user-select:none;transition:all .15s}
+.iv-cat-hd:hover{border-color:var(--bd2)}
+.iv-cat-hd .iv-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.iv-cat-hd .iv-cat-name{font-size:14px;font-weight:600;flex:1}
+.iv-cat-hd .iv-cat-cnt{font-size:11px;color:var(--t3)}
+.iv-cat-hd .iv-cat-arrow{font-size:9px;color:var(--t3);transition:transform .2s}
+.iv-cat.open .iv-cat-arrow{transform:rotate(180deg)}
+.iv-cat-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.iv-cat.open .iv-cat-body{max-height:99999px}
+.iv-qa{border:1px solid var(--bd);border-top:none;background:var(--s1);padding:14px 16px;position:relative;transition:background .15s}
+.iv-qa:first-child{border-top:1px solid var(--bd);border-radius:0 0 0 0}
+.iv-qa:last-child{border-radius:0 0 var(--r2) var(--r2)}
+.iv-qa:hover{background:var(--s2)}
+.iv-qa.mastered{opacity:.55}
+.iv-q{font-size:13px;font-weight:600;color:var(--t1);cursor:pointer;display:flex;align-items:flex-start;gap:8px;line-height:1.6}
+.iv-q .iv-toggle{font-size:10px;color:var(--t3);flex-shrink:0;margin-top:4px;transition:transform .2s}
+.iv-qa.show-a .iv-toggle{transform:rotate(90deg)}
+.iv-a{display:none;margin-top:10px;padding:10px 14px;background:var(--s2);border-radius:var(--r3);font-size:12.5px;color:var(--t2);line-height:1.8;white-space:pre-wrap}
+.iv-qa.show-a .iv-a{display:block}
+.iv-actions{position:absolute;top:12px;right:14px;display:flex;gap:4px}
+.iv-actions button{background:var(--s2);border:1px solid transparent;color:var(--t4);padding:2px 8px;border-radius:4px;cursor:pointer;font-size:11px;transition:all .12s}
+.iv-actions button:hover{color:var(--t2);background:var(--s3)}
+.iv-actions .iv-mastered{background:var(--gn2);color:var(--gn);border-color:rgba(52,211,153,.2)}
+.iv-progress{margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.iv-progress-bar{flex:1;height:6px;background:var(--s2);border-radius:3px;overflow:hidden}
+.iv-progress-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--gn));border-radius:3px;transition:width .4s}
+.iv-progress-text{font-size:12px;color:var(--t2);white-space:nowrap}
+
 @media(max-width:768px){
   .app{padding:12px 12px 80px}
   .cmd-row{grid-template-columns:repeat(2,1fr)}
   .radar-grid{grid-template-columns:1fr}
   .pq-item{flex-direction:column}
   .pq-actions{align-self:flex-end}
+  .iv-toolbar{flex-direction:column}
+  .iv-stats{margin-left:0}
 }
 </style>
 </head>
@@ -261,8 +337,10 @@ textarea,input,button,select{font-family:inherit}
     <button class="tab" data-t="daily" onclick="swTab('daily',this)">每日记录</button>
     <button class="tab" data-t="weekly" onclick="swTab('weekly',this)">周报</button>
     <button class="tab" data-t="monthly" onclick="swTab('monthly',this)">月度复盘</button>
+    <button class="tab" data-t="metrics" onclick="swTab('metrics',this)">数据看板</button>
     <button class="tab" data-t="history" onclick="swTab('history',this)">历史搜索</button>
     <button class="tab" data-t="growth" onclick="swTab('growth',this)">成长追踪</button>
+    <button class="tab" data-t="interview" onclick="swTab('interview',this)">面试题库</button>
   </div>
 
   <div class="dnav" id="dateNav" style="display:none">
@@ -293,11 +371,13 @@ textarea,input,button,select{font-family:inherit}
   <div class="pnl" id="pnl-daily"></div>
   <div class="pnl" id="pnl-weekly"></div>
   <div class="pnl" id="pnl-monthly"></div>
+  <div class="pnl" id="pnl-metrics"></div>
   <div class="pnl" id="pnl-history">
     <div class="hist-search"><input id="sInput" placeholder="搜索关键词（人名、模块、风险、bug ...）" onkeyup="if(event.key==='Enter')doSearch()"><button onclick="doSearch()">搜索</button></div>
     <div id="histRes" class="tl"></div>
   </div>
   <div class="pnl" id="pnl-growth"></div>
+  <div class="pnl" id="pnl-interview"></div>
 </div>
 
 <div class="modal-bg" id="settingsModal" onclick="if(event.target===this)closeSettings()">
@@ -456,8 +536,12 @@ let resolveTarget=null;
 function load(){
   try{const s=localStorage.getItem(DB_KEY);if(s)db=JSON.parse(s)}catch{}
   if(!db.entries)db.entries={};if(!db.cfg)db.cfg={};if(!db.dismissed)db.dismissed={};if(!db.resolved)db.resolved={};
-  // migrate from v1
+  // migrate from v2 (qa-workbench)
   try{const old=localStorage.getItem('qa-workbench');if(old){const o=JSON.parse(old);if(o.entries){for(const[k,v]of Object.entries(o.entries)){if(!db.entries[k])db.entries[k]=v}save();localStorage.removeItem('qa-workbench')}}}catch{}
+  // migrate from v1 (qa-reminder-state) - checkbox-only version
+  try{const old1=localStorage.getItem('qa-reminder-state');if(old1){const o=JSON.parse(old1);for(const[k,v]of Object.entries(o)){if(v===true){const m=k.match(/^(.+?)-(daily|weekly|monthly)-(\d+)-(\d+)$/);if(m){const dateP=m[1],tab=m[2],si=m[3],ii=m[4];let dk='';if(tab==='daily'){dk='D-'+dateP.replace(/\//g,'-')}else if(tab==='weekly'){dk='W-'+dateP.replace(/^W-/,'').replace(/\//g,'-')}else{dk='M-'+dateP.replace(/^M-/,'').replace(/\//g,'-')}if(dk&&!db.entries[dk])db.entries[dk]={};if(dk){const p=`${si}-${ii}`;if(!db.entries[dk][p])db.entries[dk][p]={};db.entries[dk][p].done=true}}}}save();localStorage.removeItem('qa-reminder-state')}}catch{}
+  // migrate from v1 settings
+  try{const old1s=localStorage.getItem('qa-reminder-settings');if(old1s){localStorage.removeItem('qa-reminder-settings')}}catch{}
 }
 function save(){
   localStorage.setItem(DB_KEY,JSON.stringify(db));
@@ -859,8 +943,10 @@ function swTab(tab,btn){
   const showDN=['daily','weekly','monthly'].includes(tab);
   document.getElementById('dateNav').style.display=showDN?'flex':'none';
   if(tab==='cmd')renderCmd();
+  else if(tab==='metrics')renderMetrics();
   else if(tab==='history')renderHist();
   else if(tab==='growth')renderGrowth();
+  else if(tab==='interview')renderInterview();
   else refresh();
 }
 function refresh(){updDate();if(['daily','weekly','monthly'].includes(curTab))renderRec(curTab)}
@@ -1062,6 +1148,223 @@ function importData(e){
 }
 
 // ═══════════════════════════════════════════
+//  METRICS DASHBOARD
+// ═══════════════════════════════════════════
+const METRICS = [
+  { id:'bugs', title:'Bug 数据', color:'var(--rd)', freq:'weekly', fields:[
+    {key:'bug_new',     label:'新增 Bug',      unit:'个', upBad:true},
+    {key:'bug_closed',  label:'关闭 Bug',      unit:'个', upBad:false},
+    {key:'bug_reopen',  label:'Reopen',        unit:'个', upBad:true},
+    {key:'bug_p0p1',    label:'严重 Bug (P0/P1)', unit:'个', upBad:true},
+    {key:'bug_open',    label:'当前 Open',     unit:'个', upBad:true},
+  ]},
+  { id:'test', title:'测试进度', color:'var(--ac)', freq:'weekly', fields:[
+    {key:'case_total',  label:'用例总数',      unit:'条'},
+    {key:'case_exec',   label:'已执行',        unit:'条', upBad:false},
+    {key:'case_pass',   label:'通过率',        unit:'%',  upBad:false},
+    {key:'regression_hours', label:'回归耗时', unit:'小时', upBad:true},
+  ]},
+  { id:'submit', title:'提测准入', color:'var(--yl)', freq:'weekly', fields:[
+    {key:'submit_count',  label:'提测次数',    unit:'次'},
+    {key:'submit_reject', label:'打回次数',    unit:'次'},
+    {key:'smoke_pass',    label:'冒烟通过率',  unit:'%',  upBad:false},
+    {key:'reject_rate',   label:'打回率',      unit:'%'},
+  ]},
+  { id:'online', title:'线上质量', color:'var(--og)', freq:'weekly', fields:[
+    {key:'online_issues',   label:'线上问题数',   unit:'个', upBad:true},
+    {key:'missed_tests',    label:'漏测数',       unit:'个', upBad:true},
+    {key:'missed_rate',     label:'漏测率',       unit:'%',  upBad:true},
+    {key:'miss_case_gap',   label:'归因: 用例缺失', unit:'个', upBad:true},
+    {key:'miss_not_exec',   label:'归因: 未执行',   unit:'个', upBad:true},
+    {key:'miss_env_diff',   label:'归因: 环境差异', unit:'个', upBad:true},
+    {key:'miss_req_nosync', label:'归因: 需求未同步', unit:'个', upBad:true},
+    {key:'miss_time_cut',   label:'归因: 时间压缩', unit:'个', upBad:true},
+  ]},
+  { id:'auto', title:'自动化效率', color:'var(--cy)', freq:'weekly', fields:[
+    {key:'auto_save_days',  label:'节省人日',     unit:'天', upBad:false},
+    {key:'auto_false_rate', label:'误报率',       unit:'%',  upBad:true},
+    {key:'auto_fail_count', label:'挂掉用例数',   unit:'条', upBad:true},
+  ]},
+  { id:'env', title:'环境与设备', color:'var(--pp)', freq:'weekly', fields:[
+    {key:'env_down_hours',  label:'环境问题耗时', unit:'小时', upBad:true},
+    {key:'env_avail_rate',  label:'环境可用率',   unit:'%',    upBad:false},
+  ]},
+  { id:'perf', title:'性能专项', color:'var(--gn)', freq:'monthly', fields:[
+    {key:'perf_fps',      label:'帧率 (FPS)',     unit:'fps', upBad:false},
+    {key:'perf_memory',   label:'内存占用',       unit:'MB',  upBad:true},
+    {key:'perf_pkg_size', label:'包体大小',       unit:'MB',  upBad:true},
+    {key:'perf_startup',  label:'启动耗时',       unit:'秒',  upBad:true},
+    {key:'crash_rate',    label:'崩溃率',         unit:'%',   upBad:true},
+    {key:'severe_incidents', label:'严重事故数',  unit:'个',  upBad:true},
+  ]},
+  { id:'capacity', title:'服务端容量', color:'var(--og)', freq:'monthly', fields:[
+    {key:'cap_qps',       label:'核心接口 QPS',   unit:''},
+    {key:'cap_resp_time', label:'平均响应时间',   unit:'ms',  upBad:true},
+    {key:'cap_error_rate',label:'错误率',         unit:'%',   upBad:true},
+  ]},
+  { id:'release', title:'版本发布', color:'var(--rd)', freq:'monthly', fields:[
+    {key:'release_count',     label:'发布次数',       unit:'次'},
+    {key:'release_pass',      label:'准出达标次数',   unit:'次', upBad:false},
+    {key:'release_forced',    label:'强行发布次数',   unit:'次', upBad:true},
+    {key:'release_risk_warn', label:'书面风险提示次数', unit:'次'},
+    {key:'case_added',        label:'用例新增',       unit:'条'},
+    {key:'case_cleaned',      label:'用例清理',       unit:'条'},
+    {key:'process_revisions', label:'流程规范修订',   unit:'次'},
+  ]},
+];
+
+let metricDate = new Date();
+let metricFreq = 'weekly';
+
+function metricDateKey(){
+  if(metricFreq==='weekly'){const m=getMon(metricDate);return `MW-${m.getFullYear()}-${S(m.getMonth()+1)}-${S(m.getDate())}`}
+  return `MM-${metricDate.getFullYear()}-${S(metricDate.getMonth()+1)}`;
+}
+
+function getMetric(key){
+  const dk=metricDateKey();
+  if(!db.entries[dk])return '';
+  return db.entries[dk][`m-${key}`]?.value ?? '';
+}
+
+function setMetric(key,val){
+  const dk=metricDateKey();
+  if(!db.entries[dk])db.entries[dk]={};
+  if(!db.entries[dk][`m-${key}`])db.entries[dk][`m-${key}`]={};
+  db.entries[dk][`m-${key}`].value = val===''?'':Number(val);
+  save();
+}
+
+function getMetricHistory(key, count){
+  const results=[];
+  const d=new Date(metricDate);
+  for(let i=0;i<count;i++){
+    let dk;
+    if(metricFreq==='weekly'){const m=getMon(d);dk=`MW-${m.getFullYear()}-${S(m.getMonth()+1)}-${S(m.getDate())}`;d.setDate(d.getDate()-7)}
+    else{dk=`MM-${d.getFullYear()}-${S(d.getMonth()+1)}`;d.setMonth(d.getMonth()-1)}
+    const v=db.entries[dk]?.[`m-${key}`]?.value;
+    results.unshift({dk,value:v??null});
+  }
+  return results;
+}
+
+function renderMetrics(){
+  const pnl=document.getElementById('pnl-metrics');
+  const filtered=METRICS.filter(g=>g.freq===metricFreq);
+
+  // Date display
+  let dateStr;
+  if(metricFreq==='weekly'){
+    const m=getMon(metricDate);const s2=new Date(m);s2.setDate(s2.getDate()+6);
+    dateStr=`${m.getMonth()+1}/${m.getDate()} - ${s2.getMonth()+1}/${s2.getDate()}`;
+  }else{
+    dateStr=`${metricDate.getFullYear()}年${metricDate.getMonth()+1}月`;
+  }
+
+  let html=`<div class="metric-nav">
+    <button onclick="navMetric(-1)">◀</button>
+    <div class="dd"><span>${dateStr}</span><input type="${metricFreq==='weekly'?'date':'month'}" onchange="jumpMetric(this.value)"></div>
+    <button onclick="navMetric(1)">▶</button>
+    <button onclick="metricDate=new Date();renderMetrics()" style="background:var(--ac2);color:var(--ac);border-color:rgba(108,140,255,.3)">本期</button>
+    <span style="margin-left:auto;display:flex;gap:4px">
+      <button onclick="metricFreq='weekly';metricDate=new Date();renderMetrics()" style="${metricFreq==='weekly'?'background:var(--ac2);color:var(--ac);border-color:rgba(108,140,255,.3)':''}">按周</button>
+      <button onclick="metricFreq='monthly';metricDate=new Date();renderMetrics()" style="${metricFreq==='monthly'?'background:var(--ac2);color:var(--ac);border-color:rgba(108,140,255,.3)':''}">按月</button>
+    </span>
+  </div>`;
+
+  filtered.forEach(group=>{
+    let cardsHtml='';
+    group.fields.forEach(f=>{
+      const val=getMetric(f.key);
+      const hist=getMetricHistory(f.key, 8);
+      const vals=hist.map(h=>h.value).filter(v=>v!==null);
+      const maxV=vals.length?Math.max(...vals,1):1;
+
+      let trendHtml='';
+      if(vals.length>1){
+        trendHtml=`<div class="mc-trend">${hist.map(h=>{
+          if(h.value===null)return '<div class="bar" style="height:1px;background:var(--s3)"></div>';
+          const pct=Math.max(4,(h.value/maxV)*28);
+          const color=group.color;
+          return `<div class="bar" style="height:${pct}px;background:${color}" title="${h.value}"></div>`;
+        }).join('')}</div>`;
+      }
+
+      let deltaHtml='';
+      if(vals.length>=2){
+        const cur=vals[vals.length-1], prev=vals[vals.length-2];
+        const diff=cur-prev;
+        if(diff!==0){
+          const sign=diff>0?'↑':'↓';
+          let cls;
+          if(f.upBad===true) cls=diff>0?'up':'down';
+          else if(f.upBad===false) cls=diff>0?'up-good':'down-bad';
+          else cls='neutral';
+          deltaHtml=`<div class="mc-delta ${cls}">${sign} ${Math.abs(diff)}${f.unit?(' '+f.unit):''}</div>`;
+        }
+      }
+
+      cardsHtml+=`<div class="mc">
+        <div class="mc-label"><span>${f.label}</span><span class="mc-unit">${f.unit}</span></div>
+        <div class="mc-input"><input type="number" value="${val}" placeholder="-" onchange="setMetric('${f.key}',this.value);renderMetrics()"></div>
+        ${trendHtml}${deltaHtml}
+      </div>`;
+    });
+
+    html+=`<div class="data-section open">
+      <div class="ds-hd" onclick="this.parentElement.classList.toggle('open')">
+        <div class="ds-title"><span class="dot" style="background:${group.color}"></span>${group.title}<span style="font-size:11px;color:var(--t3);font-weight:400;margin-left:4px">(${group.freq==='weekly'?'每周':'每月'})</span></div>
+        <span class="sec-arrow" style="font-size:9px;color:var(--t3)">▼</span>
+      </div>
+      <div class="ds-body"><div class="mg" style="padding:0 16px 14px">${cardsHtml}</div></div>
+    </div>`;
+  });
+
+  // History table
+  const allKeys=[...new Set(METRICS.filter(g=>g.freq===metricFreq).flatMap(g=>g.fields.map(f=>f.key)))];
+  const allLabels=Object.fromEntries(METRICS.filter(g=>g.freq===metricFreq).flatMap(g=>g.fields.map(f=>[f.key,f.label])));
+  const periods=[];
+  const d2=new Date(metricDate);
+  for(let i=0;i<8;i++){
+    let dk,label;
+    if(metricFreq==='weekly'){const m=getMon(d2);dk=`MW-${m.getFullYear()}-${S(m.getMonth()+1)}-${S(m.getDate())}`;label=`${m.getMonth()+1}/${m.getDate()}`;d2.setDate(d2.getDate()-7)}
+    else{dk=`MM-${d2.getFullYear()}-${S(d2.getMonth()+1)}`;label=`${d2.getMonth()+1}月`;d2.setMonth(d2.getMonth()-1)}
+    periods.unshift({dk,label});
+  }
+
+  let hasAnyData=false;
+  for(const p of periods){if(db.entries[p.dk])for(const k of allKeys){if(db.entries[p.dk]?.[`m-${k}`]?.value!=null){hasAnyData=true;break}}if(hasAnyData)break}
+
+  if(hasAnyData){
+    html+=`<div class="data-section open"><div class="ds-hd" onclick="this.parentElement.classList.toggle('open')"><div class="ds-title"><span class="dot" style="background:var(--ac)"></span>历史数据对比表</div><span class="sec-arrow" style="font-size:9px;color:var(--t3)">▼</span></div>
+    <div class="ds-body" style="overflow-x:auto;padding:0 16px 14px"><table class="data-table"><thead><tr><th>指标</th>${periods.map(p=>`<th style="text-align:center">${p.label}</th>`).join('')}</tr></thead><tbody>`;
+    allKeys.forEach(key=>{
+      html+=`<tr><td>${allLabels[key]}</td>`;
+      periods.forEach(p=>{
+        const v=db.entries[p.dk]?.[`m-${key}`]?.value;
+        html+=`<td class="val">${v!=null?v:'-'}</td>`;
+      });
+      html+=`</tr>`;
+    });
+    html+=`</tbody></table></div></div>`;
+  }
+
+  pnl.innerHTML=html;
+}
+
+function navMetric(dir){
+  if(metricFreq==='weekly')metricDate.setDate(metricDate.getDate()+dir*7);
+  else metricDate.setMonth(metricDate.getMonth()+dir);
+  renderMetrics();
+}
+function jumpMetric(v){
+  if(!v)return;
+  if(metricFreq==='monthly'){const[y,m]=v.split('-');metricDate=new Date(+y,+m-1,1)}
+  else metricDate=new Date(v+'T00:00:00');
+  renderMetrics();
+}
+
+// ═══════════════════════════════════════════
 //  CLOUD SYNC (GitHub Gist)
 // ═══════════════════════════════════════════
 let syncTimer=null;
@@ -1193,6 +1496,168 @@ async function testSync(){
   }catch(e){
     info.textContent=`✗ 连接失败: ${e.message}`;info.style.color='var(--rd)';
   }
+}
+
+// ═══════════════════════════════════════════
+//  INTERVIEW QUESTIONS
+// ═══════════════════════════════════════════
+const IVData=[
+{cat:'测试基础理论',color:'var(--ac)',items:[
+{q:'什么是软件测试？',a:'软件测试是使用人工或自动的手段，检测被测系统的过程。主要目的是验证系统是否和预期结果（即用户需求）保持一致，通过精心设计测试用例、执行测试用例，尽可能发现更多缺陷，进而修复缺陷，保证软件质量。'},
+{q:'软件测试的目的是什么？',a:'1. 找毛病保好用：找出软件缺陷，让软件正常使用不出错\n2. 防问题于未然：提前排查问题，避免上线后影响用户\n3. 让用户满意：确保软件符合用户期望，提升使用体验'},
+{q:'软件测试的原则有哪些？',a:'1. 尽早测试：开发早期就介入，问题早发现早修复\n2. 全面覆盖：功能、性能、安全等各方面都要覆盖\n3. 重点突出：关键功能和高风险模块优先测试\n4. 缺陷集群：缺陷往往集中在少数模块，重点关注\n5. 杀虫剂悖论：需不断更新测试用例，避免同样的用例发现不了新缺陷\n6. 测试不能穷尽：不可能测试所有情况，需合理取舍\n7. 避免自测：开发人员不应自己测试自己的代码'},
+{q:'测试的工作流程是什么？',a:'1. 了解需求：搞清楚软件要实现什么功能\n2. 制定计划：安排测什么、怎么测、什么时候测\n3. 设计用例：设计各种操作场景来发现问题\n4. 搭建环境：准备测试所需的软硬件环境\n5. 执行测试：按用例实际操作软件找问题\n6. 报告缺陷：发现问题详细记录并通知开发\n7. 复查验证：修复后重新验证确认问题已解决\n8. 测试总结：汇总测试情况，为后续提供参考'},
+{q:'软件测试的两种基本方法？',a:'1. 黑盒测试：不看内部代码，只关注输入输出，从用户角度验证功能是否正确\n2. 白盒测试：了解内部代码结构，针对代码逻辑进行测试，验证程序内部工作是否正确'},
+{q:'测试结束的标准是什么？',a:'1. 用例执行完毕：计划的测试场景都已覆盖\n2. 缺陷收敛：严重缺陷已修复，新发现缺陷趋近于零\n3. 指标达标：覆盖率、通过率等指标达到预定标准\n4. 风险可控：剩余风险在可接受范围内\n5. 时间节点：达到预定测试时间'},
+{q:'软件的生命周期有哪些阶段？',a:'1. 需求分析：确定软件要做什么\n2. 设计阶段：规划软件架构和模块\n3. 编码阶段：将设计转化为代码\n4. 测试阶段：查找并修复问题\n5. 部署上线：投入实际使用\n6. 维护阶段：持续优化和修复\n7. 退役：不再满足需求时下线'},
+{q:'软件测试按过程分为哪三个步骤？',a:'1. 单元测试：对最小代码单元（函数/方法）进行独立测试，确保每个零件合格\n2. 集成测试：将模块组装在一起测试接口和交互，确保零件配合正常\n3. 系统测试：对完整系统进行全面测试，确保整体功能、性能达标'},
+{q:'质量的八大特性是什么？',a:'1. 功能性：能完成预定功能\n2. 可靠性：在规定条件下正常运行\n3. 易用性：容易学习和使用\n4. 效率：响应快、资源占用少\n5. 维护性：方便修改和修复\n6. 可移植性：能在不同环境运行\n7. 兼容性：与其他系统协作良好\n8. 安全性：保护数据不泄露'},
+{q:'黑盒测试、白盒测试、单元测试、集成测试、系统测试、验收测试的区别？',a:'按视角分：\n• 黑盒测试：不看内部，只验证功能输入输出\n• 白盒测试：深入代码，验证内部逻辑\n\n按范围分：\n• 单元测试：测单个模块/函数\n• 集成测试：测模块间接口和交互\n• 系统测试：测完整系统\n• 验收测试：用户确认是否符合需求\n\n联系：先单元→集成→系统→验收，黑/白盒方法贯穿各阶段'},
+{q:'负载测试、压力测试、容量测试和强度测试的区别？',a:'1. 负载测试：正常业务量下测性能表现\n2. 压力测试：超出正常负载，找系统极限\n3. 容量测试：确定系统能处理的最大业务量\n4. 强度测试：在资源受限或异常环境下测稳定性'},
+{q:'Bug 报告必备内容有哪些？',a:'1. 标题：简洁概括问题\n2. 复现步骤：详细操作步骤\n3. 实际结果：操作后看到的异常\n4. 预期结果：正常应该是什么样\n5. 环境信息：系统/浏览器/版本等\n6. 严重程度：致命/严重/一般/轻微\n7. 优先级：修复紧急程度\n8. 附件：截图、日志等证据'},
+{q:'缺陷的生命周期是什么？',a:'1. 新建(New)：测试人员发现并提交\n2. 打开(Open)：确认为有效缺陷\n3. 已分配(Assigned)：分配给开发修复\n4. 已修复(Fixed)：开发完成修复\n5. 待验证(Pending)：等待测试复验\n6. 关闭(Closed)：验证通过，问题解决\n7. 重新打开(Reopened)：验证未通过，打回重修\n8. 拒绝(Rejected)：确认不是缺陷'},
+{q:'缺陷严重级别如何划分？',a:'1. 致命(Critical)：系统崩溃、核心功能完全不可用\n2. 严重(Major)：主要功能受损，严重影响使用\n3. 一般(Minor)：功能有瑕疵但不影响大局\n4. 轻微(Trivial)：UI/文案等小问题'},
+{q:'当开发人员说不是Bug时如何应对？',a:'1. 重新对照需求文档，用事实说话\n2. 展示测试证据：截图、日志、复现步骤\n3. 站在用户角度阐述影响\n4. 找产品经理或领导作为第三方仲裁\n5. 保持专业态度，就事论事'},
+{q:'如何提交高质量的 Bug 报告？',a:'1. 清晰准确：步骤和结果描述不含糊\n2. 完整全面：信息无遗漏\n3. 可重现：别人按步骤也能复现\n4. 客观中立：只陈述事实，不主观猜测\n5. 简洁明了：重点突出，不啰嗦'}
+]},
+{cat:'用例设计方法',color:'var(--gn)',items:[
+{q:'常用的测试用例设计方法有哪些？',a:'1. 等价类划分法：将输入数据分为有效和无效等价类\n2. 边界值分析法：关注输入边界附近的值\n3. 因果图法/判定表法：分析输入条件组合\n4. 场景法：模拟用户实际使用场景\n5. 错误推测法：基于经验推测可能出错的地方\n6. 正交表法：用较少用例覆盖多因素组合'},
+{q:'什么是等价类划分法？举例说明',a:'将输入数据按某种规则分成若干等价类，从每个类中选取代表值测试。\n\n例：注册年龄输入框（1-120岁）\n• 有效等价类：1~120之间的整数（如25）\n• 无效等价类1：<1的数（如0、-5）\n• 无效等价类2：>120的数（如150）\n• 无效等价类3：非数字（如"abc"）\n• 无效等价类4：小数（如18.5）\n• 无效等价类5：空值'},
+{q:'什么是边界值分析法？举例说明',a:'关注输入数据边界值及其附近的值，因为边界处最容易出错。\n\n例：密码长度要求6-18位\n测试边界值：5位(无效)、6位(有效边界)、7位(有效)、17位(有效)、18位(有效边界)、19位(无效)'},
+{q:'什么是场景法？',a:'模拟用户实际使用的业务流程来设计测试用例。包括：\n• 基本流：正常操作路径（如正常注册→登录→购物→支付）\n• 备选流：分支路径（如优惠券支付、余额不足）\n• 异常流：异常情况（如网络断开、支付超时）'},
+{q:'好的测试用例有什么特点？',a:'1. 目标明确：清楚测什么功能\n2. 覆盖全面：正常和异常都考虑\n3. 步骤清晰：操作步骤一目了然\n4. 结果可判：预期结果明确可验证\n5. 独立性强：用例之间互不依赖\n6. 可重复执行：任何人任何时候都能执行\n7. 简洁高效：不冗余，快速定位问题'},
+{q:'测试用例的基本要素有哪些？',a:'1. 用例编号：唯一标识\n2. 测试标题：概括性描述\n3. 所属模块：归属的功能模块\n4. 前置条件：执行前的准备状态\n5. 测试步骤：详细操作步骤\n6. 测试数据：输入的具体数据\n7. 预期结果：期望的输出或行为\n8. 优先级：执行优先级\n9. 测试类型：功能/性能/安全等'}
+]},
+{cat:'测试模型与策略',color:'var(--pp)',items:[
+{q:'常见的测试模型有哪些？',a:'1. V模型：开发与测试一一对应，简单直观但灵活性差\n2. W模型：测试与开发并行，更早发现问题\n3. H模型：测试可在任何就绪点启动，高度灵活\n4. X模型：重视探索性测试，鼓励发现新问题\n5. 敏捷测试模型：迭代测试，快速响应变化'},
+{q:'V模型的优缺点？',a:'优点：\n• 简单直观，开发与测试阶段对应清晰\n• 每个开发阶段都有相应测试验证\n• 易于理解和管理\n\n缺点：\n• 灵活性差，需求变更适应困难\n• 测试介入晚，前期问题发现迟\n• 不支持迭代开发'},
+{q:'什么是测试策略？包括哪些？',a:'测试策略是为保证测试质量和效率而制定的方法和手段总和。\n\n常见策略：\n1. 全面测试：覆盖所有功能和场景\n2. 重点测试：优先测关键功能和高风险模块\n3. 自动化测试：用工具处理重复性任务\n4. 探索性测试：凭经验灵活发现新问题\n5. 基于风险的测试：按风险等级分配资源'},
+{q:'什么时候适合使用自动化测试？',a:'适合场景：\n1. 重复性高的回归测试\n2. 大数据量的输入测试\n3. 持续集成/持续交付环境\n4. 性能和压力测试\n5. 跨平台兼容性测试\n\n不适合场景：\n1. 需求频繁变更的项目\n2. 一次性测试\n3. 探索性测试\n4. UI频繁变动的早期开发\n5. 测试环境不稳定时'},
+{q:'回归测试是什么？如何减少工作量？',a:'回归测试：修复缺陷后重新测试，确认修复有效且没引入新问题。\n\n减少工作量的方法：\n1. 自动化测试：让机器处理重复验证\n2. 精准定位影响范围：只测受影响的功能\n3. 复用历史测试结果：参考之前的测试数据\n4. 优先级划分：先测核心功能'}
+]},
+{cat:'性能测试',color:'var(--og)',items:[
+{q:'什么是性能测试？目的是什么？',a:'性能测试是验证软件在不同负载条件下的响应时间、吞吐量、资源利用率等指标。\n\n目的：\n1. 验证系统在预期负载下的响应速度\n2. 找出系统性能瓶颈\n3. 确定系统最大承载能力\n4. 验证系统稳定性和可靠性'},
+{q:'性能测试包含哪些类型？',a:'1. 负载测试(Load)：逐步增加负载，观察性能变化\n2. 压力测试(Stress)：超出正常负载，找系统极限和崩溃点\n3. 容量测试(Volume)：确定最大数据处理能力\n4. 稳定性测试(Endurance)：长时间运行，检测内存泄漏等\n5. 并发测试(Concurrency)：大量用户同时操作\n6. 峰值测试(Spike)：突然增加大量负载'},
+{q:'性能测试的关键指标有哪些？',a:'1. 响应时间(RT)：从请求发出到收到响应的时间\n2. 吞吐量(TPS/QPS)：单位时间处理的事务/请求数\n3. 并发用户数：同时在线的用户数量\n4. 错误率：失败请求的比例\n5. CPU利用率：处理器使用百分比\n6. 内存使用率：内存占用情况\n7. 磁盘I/O：读写速率\n8. 网络带宽：网络吞吐'},
+{q:'JMeter做性能测试的流程？',a:'1. 创建测试计划，添加线程组（设置并发数、循环次数）\n2. 添加HTTP请求（配置接口URL、方法、参数）\n3. 添加监听器（聚合报告、图形结果等）\n4. 配置参数化和关联（动态数据处理）\n5. 运行测试计划\n6. 分析报告：关注平均RT、TPS、错误率等\n7. 定位瓶颈并给出优化建议'},
+{q:'什么是系统瓶颈？如何定位？',a:'系统瓶颈是限制整体性能的最薄弱环节。\n\n定位方法：\n1. 监控各层资源：CPU、内存、磁盘、网络\n2. 分析数据库慢查询\n3. 检查应用层日志和线程状态\n4. 使用APM工具追踪调用链\n5. 逐步排除法：从网络→应用→数据库逐层排查'}
+]},
+{cat:'接口测试',color:'var(--cy)',items:[
+{q:'什么是接口测试？为什么要做接口测试？',a:'接口测试是对系统组件之间的接口进行测试，验证数据传输的正确性和完整性。\n\n为什么要做：\n1. 更早发现问题：不依赖UI即可测试\n2. 覆盖更全：可测试UI无法触达的逻辑\n3. 效率更高：易于自动化，执行速度快\n4. 定位更准：直接测数据层，问题定位精确'},
+{q:'接口测试主要测什么？',a:'1. 功能验证：接口返回数据是否正确\n2. 参数验证：必填/选填、类型、长度、边界值\n3. 异常处理：错误参数、空值、超长值的处理\n4. 权限验证：未登录、无权限时的拦截\n5. 性能：响应时间、并发能力\n6. 安全：SQL注入、XSS、越权访问\n7. 幂等性：重复调用结果一致\n8. 兼容性：不同版本接口的兼容'},
+{q:'HTTP常见状态码含义？',a:'2xx 成功：\n• 200 OK：请求成功\n• 201 Created：创建成功\n\n3xx 重定向：\n• 301 永久重定向\n• 302 临时重定向\n\n4xx 客户端错误：\n• 400 Bad Request：请求参数错误\n• 401 Unauthorized：未认证\n• 403 Forbidden：无权限\n• 404 Not Found：资源不存在\n\n5xx 服务端错误：\n• 500 Internal Server Error：服务器内部错误\n• 502 Bad Gateway：网关错误\n• 503 Service Unavailable：服务不可用'},
+{q:'GET和POST请求的区别？',a:'1. 数据位置：GET参数在URL中，POST在请求体中\n2. 数据长度：GET有URL长度限制，POST理论上无限制\n3. 安全性：GET参数暴露在URL，POST相对安全\n4. 缓存：GET可被缓存，POST一般不缓存\n5. 幂等性：GET是幂等的，POST不是\n6. 用途：GET用于获取数据，POST用于提交数据'},
+{q:'接口测试常用工具有哪些？',a:'1. Postman：图形化接口调试工具，支持集合运行\n2. JMeter：性能测试为主，也可做接口功能测试\n3. curl：命令行HTTP工具\n4. Python requests：编程方式做接口自动化\n5. Swagger：接口文档与在线测试\n6. Charles/Fiddler：抓包分析工具'}
+]},
+{cat:'移动端测试',color:'var(--yl)',items:[
+{q:'Web测试和APP测试的异同？',a:'相同点：都需要功能测试、兼容性测试、性能测试、安全性测试\n\n不同点：\n1. 平台：Web靠浏览器，APP靠操作系统\n2. 交互：Web用鼠标键盘，APP有触摸手势\n3. 网络：APP需测弱网、网络切换\n4. 安装：APP需测安装/卸载/升级\n5. 中断：APP需测来电、短信等中断\n6. 权限：APP需测系统权限管理\n7. 资源：APP需关注电量、内存占用'},
+{q:'APP测试需要额外关注哪些方面？',a:'1. 安装卸载测试：正常/升级/覆盖安装\n2. 兼容性：不同机型、系统版本、分辨率\n3. 网络：WiFi/4G/5G切换、弱网、断网\n4. 中断测试：来电、短信、闹钟、低电量\n5. 权限测试：相机、定位、存储等权限\n6. 手势操作：滑动、缩放、长按\n7. 横竖屏切换\n8. 推送通知\n9. 内存和CPU占用\n10. 电量消耗'},
+{q:'如何判断是前端问题还是后端问题？',a:'1. 抓包分析：用Charles/Fiddler查看请求和响应\n   • 请求参数正确但响应数据错误→后端问题\n   • 请求参数本身就错→前端问题\n2. 控制台日志：查看浏览器/APP日志\n3. 接口直接调用：跳过UI直接测接口\n   • 接口正常但页面异常→前端问题\n   • 接口本身就异常→后端问题\n4. 数据库检查：直接查数据是否正确'}
+]},
+{cat:'测试管理',color:'var(--rd)',items:[
+{q:'如何制定测试计划？',a:'1. 明确目标：确定测什么、达到什么标准\n2. 确定范围：哪些功能要测、哪些不测\n3. 选择策略：手动/自动、黑盒/白盒\n4. 评估资源：人力、设备、工具\n5. 安排进度：各阶段时间节点\n6. 识别风险：预估问题和应对方案\n7. 明确分工：谁负责哪部分\n8. 定义准入/准出标准'},
+{q:'测试时间不够怎么办？',a:'1. 重新评估：识别最重要的测试内容\n2. 风险优先：先测最高风险的功能\n3. 调整策略：简化低优先级的测试\n4. 求助资源：申请加人或延期\n5. 自动化：能自动化的尽快自动化\n6. 协调开发：让开发先修严重bug\n7. 沟通透明：及时向上反馈风险'},
+{q:'如何做好测试组长/管理？',a:'1. 明确目标：让团队清楚测什么、标准是什么\n2. 合理分工：根据成员特长分配任务\n3. 制定计划：清晰的时间节点和里程碑\n4. 过程把控：定期检查进度和质量\n5. 风险管理：提前识别和应对风险\n6. 沟通协调：与开发/产品保持良好沟通\n7. 培养团队：指导成员成长\n8. 度量改进：用数据驱动流程优化'},
+{q:'如何保证测试覆盖率？',a:'1. 需求追溯矩阵：每个需求都有对应用例\n2. 多种设计方法组合：等价类+边界值+场景法\n3. 代码覆盖率工具：辅助发现未覆盖代码\n4. 同行评审：互相检查用例完整性\n5. 探索性测试：补充结构化测试的盲区\n6. 定期复盘：总结漏测原因并改进'},
+{q:'如何编写测试报告？',a:'1. 基本信息：项目名称、版本、测试时段\n2. 测试概要：范围、方法、环境\n3. 测试结果：执行情况统计\n4. 缺陷分析：按严重程度、模块分布\n5. 风险评估：遗留问题的影响分析\n6. 测试结论：是否达到准出标准\n7. 改进建议：流程和质量优化方向'}
+]},
+{cat:'自动化测试',color:'var(--gn)',items:[
+{q:'自动化测试的优缺点？',a:'优点：\n1. 执行效率高：7×24小时不间断运行\n2. 覆盖率高：可大量重复执行\n3. 一致性好：每次执行步骤完全一致\n4. 适合回归：代码变更后快速验证\n5. 节省长期成本：初始投入后边际成本低\n\n缺点：\n1. 初始投入大：编写脚本需要时间\n2. 维护成本：需求变更需更新脚本\n3. 局限性：难以发现新的UI/UX问题\n4. 技术门槛：需要编程能力\n5. 不适合探索性测试'},
+{q:'自动化测试框架选型考虑因素？',a:'1. 项目技术栈：Web/APP/接口\n2. 团队技术能力：编程语言熟悉度\n3. 维护成本：框架的可维护性\n4. 社区生态：文档、插件、支持\n5. CI/CD集成：与持续集成工具的兼容\n6. 报告能力：测试报告的详细程度\n\n常见框架：\n• Web UI：Selenium、Playwright、Cypress\n• APP：Appium、UIAutomator\n• 接口：Requests+Pytest、RestAssured\n• 性能：JMeter、Locust'},
+{q:'什么是持续集成（CI）？测试在CI中的角色？',a:'持续集成是开发人员频繁（每天多次）将代码合并到主干，每次合并都触发自动化构建和测试。\n\n测试在CI中的角色：\n1. 自动化测试作为质量门禁\n2. 代码提交后自动执行单元测试\n3. 合并前运行集成测试\n4. 定期执行端到端测试\n5. 快速反馈质量状态\n6. 防止回归问题进入主干'}
+]},
+{cat:'安全测试',color:'var(--rd)',items:[
+{q:'软件安全性测试应从哪些方面进行？',a:'1. 身份认证：登录验证机制是否可靠\n2. 授权访问：权限控制是否正确，防越权\n3. 数据加密：传输和存储的加密保护\n4. 输入验证：防SQL注入、XSS攻击\n5. 会话管理：Session安全、超时机制\n6. 日志审计：操作记录和异常监控\n7. 接口安全：防重放、防篡改\n8. 敏感数据：密码脱敏、隐私保护'},
+{q:'常见的Web安全漏洞有哪些？',a:'1. SQL注入：通过输入恶意SQL语句攻击数据库\n2. XSS（跨站脚本）：注入恶意脚本到网页\n3. CSRF（跨站请求伪造）：伪造用户请求\n4. 越权访问：访问不属于自己的数据\n5. 文件上传漏洞：上传恶意文件\n6. 信息泄露：敏感信息暴露\n7. 弱口令：密码强度不足\n8. 不安全的直接对象引用'}
+]},
+{cat:'数据库测试',color:'var(--cy)',items:[
+{q:'数据库测试主要测什么？',a:'1. 数据完整性：数据是否正确存储\n2. 数据一致性：多表之间数据是否一致\n3. CRUD操作：增删改查是否正确\n4. 约束验证：主键、外键、唯一性约束\n5. 存储过程/触发器：逻辑是否正确\n6. 性能：查询效率、索引优化\n7. 事务：并发时数据是否正确\n8. 备份恢复：灾难恢复能力'},
+{q:'SQL基础：常用查询语句？',a:'• SELECT：查询数据\n• INSERT：插入数据\n• UPDATE：更新数据\n• DELETE：删除数据\n• JOIN：多表关联查询\n• GROUP BY：分组聚合\n• HAVING：分组后筛选\n• ORDER BY：排序\n• LIMIT：限制返回条数\n• DISTINCT：去重\n• UNION：合并结果集\n• 子查询：嵌套查询'}
+]},
+{cat:'敏捷测试',color:'var(--pp)',items:[
+{q:'什么是敏捷测试？与传统测试的区别？',a:'敏捷测试是在敏捷开发模式下进行的测试，强调快速迭代、持续反馈。\n\n与传统测试区别：\n1. 参与时机：敏捷全程参与 vs 传统后期介入\n2. 文档：敏捷轻文档 vs 传统重文档\n3. 沟通：敏捷面对面 vs 传统书面\n4. 变更：敏捷拥抱变化 vs 传统抵制变更\n5. 反馈：敏捷快速迭代 vs 传统阶段反馈\n6. 角色：敏捷人人负责质量 vs 传统专人负责'},
+{q:'敏捷开发中测试人员的职责？',a:'1. 参与需求评审和用户故事讨论\n2. 编写验收标准(AC)\n3. 持续测试，与开发同步\n4. 维护自动化测试\n5. 参加每日站会反馈质量状态\n6. Sprint回顾中提出改进建议\n7. 推动质量内建(Quality Built-in)\n8. 与开发结对测试'}
+]},
+{cat:'项目实战与软技能',color:'var(--og)',items:[
+{q:'描述你以往的测试流程？',a:'1. 需求评审：参与需求讨论，提出测试视角的问题\n2. 测试计划：评估工作量，安排测试策略和进度\n3. 用例设计：根据需求文档设计测试用例\n4. 用例评审：团队评审确保覆盖完整\n5. 环境准备：搭建测试环境和数据\n6. 冒烟测试：验证基本功能可测\n7. 功能测试：全面执行测试用例\n8. 缺陷跟踪：提交、跟踪、回归验证\n9. 专项测试：性能/兼容性/安全等\n10. 测试报告：总结测试结论和建议'},
+{q:'遇到过什么棘手的测试问题？如何解决的？',a:'回答框架（STAR法则）：\n\nSituation（背景）：描述项目和遇到的问题\nTask（任务）：需要解决什么\nAction（行动）：采取了哪些措施\nResult（结果）：最终效果\n\n常见案例方向：\n1. 难以复现的偶发Bug\n2. 性能瓶颈定位\n3. 测试时间严重不足\n4. 需求频繁变更\n5. 与开发的沟通冲突'},
+{q:'你认为测试工程师需要什么素质？',a:'1. 细心耐心：不放过任何细微问题\n2. 逻辑思维：理清业务和代码逻辑\n3. 沟通能力：与开发/产品有效协作\n4. 学习能力：紧跟技术发展\n5. 责任心：对软件质量负责\n6. 好奇心：主动探索发现问题\n7. 全局视角：从用户和业务角度思考\n8. 抗压能力：应对紧张的项目节奏'},
+{q:'如何理解QA和QC的区别？',a:'QA（质量保证）：\n• 关注过程，预防缺陷\n• 确保开发流程规范\n• 从项目开始就介入\n• 建立和维护质量体系\n\nQC（质量控制）：\n• 关注结果，发现缺陷\n• 对产品进行检测\n• 主要在开发完成后\n• 执行测试活动\n\n简而言之：QA是"做正确的事"，QC是"正确地做事"'},
+{q:'如何减少测试人员离职带来的损失？',a:'1. 文档沉淀：完善测试用例、流程文档\n2. 知识共享：定期技术分享和交叉培训\n3. 交接机制：规范化交接流程\n4. 梯队建设：培养备份人员\n5. 工具标准化：减少个人依赖\n6. 自动化积累：脚本可复用\n7. 团队氛围：关注成员状态和诉求'}
+]}
+];
+
+const IV_DB_KEY='qa-iv-progress';
+let ivProgress={};
+function ivLoad(){try{const s=localStorage.getItem(IV_DB_KEY);if(s)ivProgress=JSON.parse(s)}catch{}}
+function ivSave(){localStorage.setItem(IV_DB_KEY,JSON.stringify(ivProgress))}
+
+let ivFilter='all',ivSearch='',ivCatFilter='all';
+
+function renderInterview(){
+  ivLoad();
+  const pnl=document.getElementById('pnl-interview');
+  const totalQ=IVData.reduce((s,c)=>s+c.items.length,0);
+  const masteredQ=Object.keys(ivProgress).filter(k=>ivProgress[k]).length;
+  const pct=totalQ?Math.round(masteredQ/totalQ*100):0;
+
+  let toolHtml=`<div class="iv-progress"><div class="iv-progress-bar"><div class="iv-progress-fill" style="width:${pct}%"></div></div><div class="iv-progress-text">${masteredQ}/${totalQ} 已掌握 (${pct}%)</div></div>`;
+  toolHtml+=`<div class="iv-toolbar"><input id="ivSearchInput" placeholder="搜索面试题关键词..." value="${esc(ivSearch)}" oninput="ivSearch=this.value;renderIVList()"><select id="ivCatSel" onchange="ivCatFilter=this.value;renderIVList()"><option value="all">全部分类</option>${IVData.map((c,i)=>`<option value="${i}"${ivCatFilter==i?' selected':''}>${c.cat} (${c.items.length})</option>`).join('')}</select><select onchange="ivFilter=this.value;renderIVList()"><option value="all"${ivFilter==='all'?' selected':''}>全部状态</option><option value="unmastered"${ivFilter==='unmastered'?' selected':''}>未掌握</option><option value="mastered"${ivFilter==='mastered'?' selected':''}>已掌握</option></select><div class="iv-stats">共 <b>${totalQ}</b> 题</div></div>`;
+  toolHtml+='<div id="ivListContainer"></div>';
+  pnl.innerHTML=toolHtml;
+  renderIVList();
+}
+
+function renderIVList(){
+  const container=document.getElementById('ivListContainer');
+  if(!container)return;
+  const q=(ivSearch||'').toLowerCase().trim();
+  let html='';
+  let qIdx=0;
+
+  IVData.forEach((cat,ci)=>{
+    if(ivCatFilter!=='all'&&ivCatFilter!=ci){qIdx+=cat.items.length;return}
+
+    const filtered=cat.items.filter((item,ii)=>{
+      const key=`${ci}-${ii}`;
+      const mastered=!!ivProgress[key];
+      if(ivFilter==='mastered'&&!mastered)return false;
+      if(ivFilter==='unmastered'&&mastered)return false;
+      if(q&&!item.q.toLowerCase().includes(q)&&!item.a.toLowerCase().includes(q))return false;
+      return true;
+    });
+
+    if(filtered.length===0){qIdx+=cat.items.length;return}
+
+    const catMastered=cat.items.filter((_,ii)=>ivProgress[`${ci}-${ii}`]).length;
+    html+=`<div class="iv-cat open"><div class="iv-cat-hd" onclick="this.parentElement.classList.toggle('open')"><span class="iv-dot" style="background:${cat.color}"></span><span class="iv-cat-name">${cat.cat}</span><span class="iv-cat-cnt">${catMastered}/${cat.items.length} 已掌握</span><span class="iv-cat-arrow">▼</span></div><div class="iv-cat-body">`;
+
+    cat.items.forEach((item,ii)=>{
+      const key=`${ci}-${ii}`;
+      const mastered=!!ivProgress[key];
+      if(ivFilter==='mastered'&&!mastered)return;
+      if(ivFilter==='unmastered'&&mastered)return;
+      if(q&&!item.q.toLowerCase().includes(q)&&!item.a.toLowerCase().includes(q))return;
+
+      const qHtml=q?highlightIV(esc(item.q),q):esc(item.q);
+      html+=`<div class="iv-qa${mastered?' mastered':''}" id="ivq-${key}"><div class="iv-q" onclick="this.parentElement.classList.toggle('show-a')"><span class="iv-toggle">▶</span><span>${qHtml}</span></div><div class="iv-a">${esc(item.a)}</div><div class="iv-actions"><button class="${mastered?'iv-mastered':''}" onclick="ivToggleMaster('${key}')">${mastered?'✓ 已掌握':'○ 标记掌握'}</button></div></div>`;
+    });
+
+    html+='</div></div>';
+    qIdx+=cat.items.length;
+  });
+
+  if(!html)html='<div class="empty">没有匹配的面试题</div>';
+  container.innerHTML=html;
+}
+
+function highlightIV(t,q){return t.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<mark style="background:var(--yl2);color:var(--yl);padding:0 2px;border-radius:2px">$1</mark>')}
+
+function ivToggleMaster(key){
+  ivLoad();
+  ivProgress[key]=!ivProgress[key];
+  ivSave();
+  renderInterview();
 }
 
 // ═══════════════════════════════════════════
