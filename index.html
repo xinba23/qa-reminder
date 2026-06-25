@@ -263,8 +263,13 @@ textarea,input,button,select{font-family:inherit}
 .cfg-section h4{font-size:13px;color:var(--ac);margin-bottom:10px}
 .cfg-note{font-size:11px;color:var(--t3);margin-top:8px;line-height:1.6}
 .cfg-note a{color:var(--ac)}
-.modal-r input[type=text],.modal-r input[type=password]{background:var(--s2);border:1px solid var(--bd);color:var(--t1);padding:5px 8px;border-radius:var(--r3);font-size:12px;width:200px}
-.modal-r input[type=text]:focus,.modal-r input[type=password]:focus{outline:none;border-color:var(--ac)}
+.modal-r input[type=text],.modal-r input[type=password],.modal-r select,.modal-r textarea.doc-cfg{background:var(--s2);border:1px solid var(--bd);color:var(--t1);padding:5px 8px;border-radius:var(--r3);font-size:12px}
+.modal-r input[type=text],.modal-r input[type=password]{width:200px}
+.modal-r select{width:200px;cursor:pointer}
+.modal-r textarea.doc-cfg{width:100%;min-height:54px;resize:vertical;margin-top:6px}
+.modal-r input:focus,.modal-r select:focus,.modal-r textarea.doc-cfg:focus{outline:none;border-color:var(--ac)}
+.doc-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.doc-actions button{font-size:12px;padding:6px 12px}
 
 /* Empty state */
 .empty{text-align:center;color:var(--t3);padding:50px 20px;font-size:13px}
@@ -325,6 +330,7 @@ textarea,input,button,select{font-family:inherit}
     <div class="hd-r">
       <span class="sync-status" id="syncStatus" onclick="manualSync()" title="点击手动同步"><span class="sync-dot"></span><span id="syncLabel">未配置同步</span></span>
       <span class="save-info"><span class="save-dot"></span><span id="saveLabel">已保存</span></span>
+      <button onclick="exportCurrentDoc()" title="导出当前页为 Markdown 云文档">📄 云文档</button>
       <button onclick="showSettings()">⚙ 设置</button>
       <button onclick="exportData()">↓ 导出</button>
       <button onclick="document.getElementById('importF').click()">↑ 导入</button>
@@ -399,6 +405,41 @@ textarea,input,button,select{font-family:inherit}
       <div class="modal-r"><label>自动同步</label><label class="sw"><input type="checkbox" id="cfgSyncOn" checked><span class="sl"></span></label></div>
       <div class="modal-r"><label>同步状态</label><span id="cfgSyncInfo" style="font-size:12px;color:var(--t3)">未配置</span></div>
       <div class="modal-r"><label></label><button class="btn-p" onclick="testSync()" style="padding:5px 12px;font-size:12px">测试同步</button></div>
+    </div>
+    <div class="cfg-section">
+      <h4>📄 云文档同步</h4>
+      <div class="cfg-note">将每日/周报/月报同步到云文档。<b>飞书云文档</b>需部署后端（项目 <code>feishu-sync-server/</code>），密钥只放服务端。</div>
+      <div class="modal-r"><label>启用云文档</label><label class="sw"><input type="checkbox" id="cfgDocOn"><span class="sl"></span></label></div>
+      <div class="modal-r"><label>同步方式</label>
+        <select id="cfgDocMode">
+          <option value="feishu">飞书云文档（API + 后端）</option>
+          <option value="gist">Gist Markdown</option>
+          <option value="webhook">Webhook 推送</option>
+          <option value="both">飞书 + Gist 双写</option>
+        </select>
+      </div>
+      <div class="modal-r" style="flex-direction:column;align-items:stretch"><label style="margin-bottom:4px">飞书同步服务地址</label>
+        <input type="text" id="cfgFeishuUrl" placeholder="http://localhost:8787 或 https://your-server.com" style="width:100%">
+      </div>
+      <div class="modal-r"><label>API Key</label><input type="password" id="cfgFeishuKey" placeholder="与服务端 API_KEY 一致"></div>
+      <div class="modal-r"><label>同步范围</label>
+        <select id="cfgDocScope">
+          <option value="changed">仅变更的记录</option>
+          <option value="recent">近 30 天全部</option>
+          <option value="all">全部历史</option>
+        </select>
+      </div>
+      <div class="modal-r"><label>保存时自动同步</label><label class="sw"><input type="checkbox" id="cfgDocAuto" checked><span class="sl"></span></label></div>
+      <div class="modal-r" style="flex-direction:column;align-items:stretch"><label style="margin-bottom:4px">Webhook 地址（飞书/钉钉机器人）</label>
+        <input type="text" id="cfgWebhook" placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/..." style="width:100%">
+      </div>
+      <div class="modal-r"><label>云文档状态</label><span id="cfgDocInfo" style="font-size:12px;color:var(--t3)">未配置</span></div>
+      <div class="doc-actions">
+        <button class="btn-p" onclick="syncCloudDocs(true)">立即同步云文档</button>
+        <button class="btn-g" onclick="copyCurrentDocMarkdown()">复制当前页 Markdown</button>
+        <button class="btn-g" onclick="downloadCurrentDocMarkdown()">下载当前页 .md</button>
+        <button class="btn-g" onclick="testFeishuBackend()">测试飞书服务</button>
+      </div>
     </div>
     <div class="modal-btns"><button class="btn-g" onclick="closeSettings()">关闭</button><button class="btn-p" onclick="saveCfg()">保存</button></div>
   </div>
@@ -548,6 +589,7 @@ function save(){
   const el=document.getElementById('saveLabel');
   el.textContent='保存中...';setTimeout(()=>el.textContent='已保存',600);
   scheduleSyncPush();
+  scheduleDocSync();
 }
 
 // Also persist to IndexedDB for larger storage
@@ -1076,6 +1118,18 @@ function showSettings(){
   document.getElementById('cfgME').checked=s.monthlyOn!==false;
   document.getElementById('cfgToken').value=s.ghToken||'';
   document.getElementById('cfgSyncOn').checked=s.syncOn!==false;
+  document.getElementById('cfgDocOn').checked=!!s.docSyncOn;
+  document.getElementById('cfgDocMode').value=s.docMode||'feishu';
+  document.getElementById('cfgDocScope').value=s.docScope||'changed';
+  document.getElementById('cfgDocAuto').checked=s.docAuto!==false;
+  document.getElementById('cfgFeishuUrl').value=s.feishuUrl||'';
+  document.getElementById('cfgFeishuKey').value=s.feishuApiKey||'';
+  document.getElementById('cfgWebhook').value=s.webhookUrl||'';
+  const docInfo=document.getElementById('cfgDocInfo');
+  if(s.docLastSync)docInfo.textContent=`上次同步: ${new Date(s.docLastSync).toLocaleString()}`;
+  else if(s.docSyncOn)docInfo.textContent='已启用，等待首次同步';
+  else docInfo.textContent='未启用';
+  docInfo.style.color='var(--t3)';
   const info=document.getElementById('cfgSyncInfo');
   if(s.gistId)info.textContent=`Gist ID: ${s.gistId.substring(0,8)}... · 上次: ${s.lastSync?new Date(s.lastSync).toLocaleString():'无'}`;
   else if(s.ghToken)info.textContent='已配置 Token，等待首次同步';
@@ -1092,11 +1146,22 @@ function saveCfg(){
     weeklyTime:document.getElementById('cfgWT').value,weeklyOn:document.getElementById('cfgWE').checked,
     monthlyTime:document.getElementById('cfgMT').value,monthlyOn:document.getElementById('cfgME').checked,
     ghToken:document.getElementById('cfgToken').value.trim(),syncOn:document.getElementById('cfgSyncOn').checked,
-    gistId:oldGistId,lastSync:db.cfg.lastSync};
+    gistId:oldGistId,lastSync:db.cfg.lastSync,
+    docSyncOn:document.getElementById('cfgDocOn').checked,
+    docMode:document.getElementById('cfgDocMode').value,
+    docScope:document.getElementById('cfgDocScope').value,
+    docAuto:document.getElementById('cfgDocAuto').checked,
+    feishuUrl:document.getElementById('cfgFeishuUrl').value.trim().replace(/\/$/,''),
+    feishuApiKey:document.getElementById('cfgFeishuKey').value.trim(),
+    webhookUrl:document.getElementById('cfgWebhook').value.trim(),
+    docLastSync:db.cfg.docLastSync,
+    docSyncedKeys:db.cfg.docSyncedKeys||{}};
   save();closeSettings();toast('设置已保存');
   if(db.cfg.ghToken&&db.cfg.syncOn!==false){
     setSyncState('syncing','正在同步...');
     syncPull().then(()=>syncPush());
+  }else if(db.cfg.docSyncOn){
+    syncCloudDocs(true);
   }else{
     setSyncState('','未配置同步');
   }
@@ -1365,6 +1430,287 @@ function jumpMetric(v){
 }
 
 // ═══════════════════════════════════════════
+//  CLOUD DOCUMENT SYNC (Markdown)
+// ═══════════════════════════════════════════
+let docSyncTimer=null;
+
+function tabFromKey(key){
+  if(key.startsWith('D-'))return 'daily';
+  if(key.startsWith('W-'))return 'weekly';
+  if(key.startsWith('M-'))return 'monthly';
+  return null;
+}
+
+function keyTitle(key){
+  const tab=tabFromKey(key);
+  const label=key.replace(/^[DWM]-/,'').replace(/-/g,'/');
+  if(tab==='daily')return `每日记录 ${label}`;
+  if(tab==='weekly')return `周报 ${label}`;
+  if(tab==='monthly')return `月度复盘 ${label}`;
+  return key;
+}
+
+function buildEntryMarkdown(key){
+  const tab=tabFromKey(key);
+  const tmpl=T[tab];
+  const entry=db.entries[key];
+  if(!tab||!tmpl||!entry)return null;
+
+  let has=false;
+  let md=`# ${keyTitle(key)}\n\n> 导出时间：${new Date().toLocaleString('zh-CN')}\n\n`;
+
+  tmpl.forEach((sec,si)=>{
+    let secHas=false;
+    let block=`## ${sec.title}\n\n`;
+    sec.items.forEach((item,ii)=>{
+      const d=entry[`${si}-${ii}`]||{};
+      if(!d.text||!d.text.trim())return;
+      has=true;secHas=true;
+      const tags=[d.done?'✓完成':'',d.flag?'★重要':'',d.followup?'→跟进':''].filter(Boolean).join(' ');
+      block+=`### ${item.p}\n\n`;
+      if(tags)block+=`**标记：** ${tags}\n\n`;
+      block+=`${d.text.trim()}\n\n---\n\n`;
+    });
+    if(secHas)md+=block;
+  });
+
+  if(!has)return null;
+  return md;
+}
+
+function collectDocKeys(scope='changed'){
+  const keys=Object.keys(db.entries).filter(k=>/^[DWM]-/.test(k)).sort();
+  if(scope==='all')return keys.filter(k=>buildEntryMarkdown(k));
+
+  const cutoff=Date.now()-30*86400000;
+  const synced=db.cfg.docSyncedKeys||{};
+
+  return keys.filter(k=>{
+    if(!buildEntryMarkdown(k))return false;
+    if(scope==='recent'){
+      const d=parseKeyDate(k);
+      return d&&d.getTime()>=cutoff;
+    }
+    // changed: not synced or entry modified after last doc sync
+    const lastDoc=synced[k];
+    if(!lastDoc)return true;
+    return false;
+  });
+}
+
+function buildMetricsMarkdown(){
+  const keys=Object.keys(db.entries).filter(k=>k.startsWith('MW-')||k.startsWith('MM-')).sort().slice(-8);
+  if(!keys.length)return '';
+  let md=`# 数据看板摘要\n\n| 周期 | 指标 | 数值 |\n|------|------|------|\n`;
+  keys.forEach(k=>{
+    const entry=db.entries[k];
+    METRICS.forEach(g=>{
+      g.fields.forEach(f=>{
+        const v=entry?.[`m-${f.key}`]?.value;
+        if(v!=null)md+=`| ${k.replace(/^[A-Z]+-/,'')} | ${f.label} | ${v}${f.unit||''} |\n`;
+      });
+    });
+  });
+  return md+'\n';
+}
+
+function scheduleDocSync(){
+  if(!db.cfg.docSyncOn||db.cfg.docAuto===false)return;
+  clearTimeout(docSyncTimer);
+  docSyncTimer=setTimeout(async ()=>{
+    if(!['daily','weekly','monthly'].includes(curTab))return;
+    const key=dateKey(curTab);
+    const md=buildEntryMarkdown(key);
+    if(!md)return;
+    try{
+      await syncOneDoc(key, md, keyTitle(key));
+    }catch(e){console.error('Auto doc sync failed',e);toast('云文档自动同步失败: '+e.message)}
+  },5000);
+}
+
+async function syncOneDoc(key, markdown, title){
+  const mode=db.cfg.docMode||'feishu';
+  const docs={[`docs/${key}.md`]:markdown};
+
+  if(mode==='feishu'||mode==='both'){
+    await syncToFeishuBackend(key, title, markdown);
+  }
+  if(mode==='gist'||mode==='both'){
+    if(!db.cfg.ghToken)throw new Error('Gist 双写需要 GitHub Token');
+    await syncPushDocs(docs);
+  }
+  if(mode==='webhook'&&db.cfg.webhookUrl){
+    await syncWebhookDocs([key], docs);
+  }
+
+  if(!db.cfg.docSyncedKeys)db.cfg.docSyncedKeys={};
+  db.cfg.docSyncedKeys[key]=new Date().toISOString();
+  db.cfg.docLastSync=new Date().toISOString();
+  localStorage.setItem(DB_KEY,JSON.stringify(db));
+}
+
+async function syncToFeishuBackend(key, title, markdown){
+  const base=db.cfg.feishuUrl;
+  if(!base)throw new Error('请配置飞书同步服务地址');
+  const headers={'Content-Type':'application/json'};
+  if(db.cfg.feishuApiKey){
+    headers.Authorization=`Bearer ${db.cfg.feishuApiKey}`;
+  }
+  const r=await fetch(`${base}/api/feishu/sync`,{
+    method:'POST',
+    headers,
+    body:JSON.stringify({key,title,markdown})
+  });
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok||!data.ok)throw new Error(data.error||`HTTP ${r.status}`);
+  return data;
+}
+
+async function syncCloudDocs(manual=false){
+  if(!db.cfg.docSyncOn&&!manual){toast('请先在设置中启用云文档同步');return}
+  const scope=manual?(db.cfg.docScope||'recent'):'changed';
+  const keys=collectDocKeys(scope);
+  if(!keys.length){if(manual)toast('没有可同步的内容');return}
+
+  try{
+    setSyncState('syncing','同步云文档...');
+    for(const key of keys){
+      const md=buildEntryMarkdown(key);
+      if(!md)continue;
+      await syncOneDoc(key, md, keyTitle(key));
+    }
+    const metricsMd=buildMetricsMarkdown();
+    if(metricsMd&&(db.cfg.docMode==='gist'||db.cfg.docMode==='both')&&db.cfg.ghToken){
+      await syncPushDocs({'docs/metrics-summary.md':metricsMd});
+    }
+    const info=document.getElementById('cfgDocInfo');
+    if(info)info.textContent=`上次同步: ${new Date().toLocaleString()}`;
+    setSyncState('synced','已同步');
+    toast(`已同步 ${keys.length} 篇到云文档`);
+  }catch(e){
+    console.error('Doc sync failed',e);
+    setSyncState('error','同步失败');
+    toast('云文档同步失败: '+e.message);
+  }
+}
+
+async function syncPushDocs(docs){
+  const token=db.cfg.ghToken;
+  const files={};
+  for(const[name,content]of Object.entries(docs)){
+    files[name]={content};
+  }
+  // also keep json data file
+  files[GIST_FILE]={content:JSON.stringify({entries:db.entries,resolved:db.resolved,dismissed:db.dismissed})};
+
+  if(db.cfg.gistId){
+    const r=await fetch(`https://api.github.com/gists/${db.cfg.gistId}`,{
+      method:'PATCH',
+      headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},
+      body:JSON.stringify({files})
+    });
+    if(!r.ok)throw new Error(`Gist HTTP ${r.status}`);
+  }else{
+    const r=await fetch('https://api.github.com/gists',{
+      method:'POST',
+      headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},
+      body:JSON.stringify({description:'QA Workbench Docs',public:false,files})
+    });
+    if(!r.ok)throw new Error(`Gist HTTP ${r.status}`);
+    const g=await r.json();
+    db.cfg.gistId=g.id;
+    localStorage.setItem(DB_KEY,JSON.stringify(db));
+  }
+}
+
+async function syncWebhookDocs(keys, docs){
+  const url=db.cfg.webhookUrl;
+  if(!url)throw new Error('未配置 Webhook 地址');
+
+  const preview=keys.slice(-3).map(k=>`• ${keyTitle(k)}`).join('\n');
+  const text=`【QA 工作台】已更新 ${keys.length} 篇记录\n\n${preview}\n\n请在 Gist 或导出的 Markdown 中查看全文。`;
+
+  let body;
+  if(url.includes('feishu.cn')||url.includes('lark')){
+    body={msg_type:'text',content:{text}};
+  }else if(url.includes('dingtalk')){
+    body={msgtype:'text',text:{content:text}};
+  }else{
+    body={text,keys,updatedAt:new Date().toISOString()};
+  }
+
+  await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),mode:'no-cors'});
+}
+
+function getCurrentDocMarkdown(){
+  if(!['daily','weekly','monthly'].includes(curTab)){
+    return collectDocKeys('recent').map(k=>buildEntryMarkdown(k)).filter(Boolean).join('\n\n');
+  }
+  const key=dateKey(curTab);
+  return buildEntryMarkdown(key)||`# ${keyTitle(key)}\n\n（暂无内容）`;
+}
+
+function exportCurrentDoc(){
+  const md=getCurrentDocMarkdown();
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(md).then(()=>toast('已复制 Markdown 到剪贴板，可粘贴到飞书/语雀/Notion'));
+  }
+  downloadMarkdown(md, `${dateKey(curTab)||'qa'}.md`);
+}
+
+function copyCurrentDocMarkdown(){
+  const md=getCurrentDocMarkdown();
+  navigator.clipboard.writeText(md).then(()=>toast('Markdown 已复制'));
+}
+
+function downloadCurrentDocMarkdown(){
+  downloadMarkdown(getCurrentDocMarkdown(), `${dateKey(curTab)||'qa-export'}.md`);
+}
+
+function downloadMarkdown(content, filename){
+  const blob=new Blob([content],{type:'text/markdown;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+async function testFeishuBackend(){
+  const url=document.getElementById('cfgFeishuUrl').value.trim().replace(/\/$/,'');
+  const key=document.getElementById('cfgFeishuKey').value.trim();
+  const info=document.getElementById('cfgDocInfo');
+  if(!url){info.textContent='请先填写飞书服务地址';info.style.color='var(--rd)';return}
+  info.textContent='测试中...';info.style.color='var(--yl)';
+  try{
+    const headers={};
+    if(key)headers.Authorization=`Bearer ${key}`;
+    const r=await fetch(`${url}/api/feishu/test`,{headers});
+    const data=await r.json();
+    if(!r.ok||!data.ok)throw new Error(data.error||`HTTP ${r.status}`);
+    info.textContent=`✓ 飞书服务正常 · Token ${data.token_preview||'OK'}`;info.style.color='var(--gn)';
+  }catch(e){
+    info.textContent='✗ '+e.message;info.style.color='var(--rd)';
+  }
+}
+
+async function testWebhook(){
+  const url=document.getElementById('cfgWebhook').value.trim();
+  const info=document.getElementById('cfgDocInfo');
+  if(!url){info.textContent='请先填写 Webhook';info.style.color='var(--rd)';return}
+  info.textContent='发送中...';info.style.color='var(--yl)';
+  try{
+    db.cfg.webhookUrl=url;
+    await syncWebhookDocs(['D-test'],{'docs/D-test.md':'# 测试\n\nQA 工作台 Webhook 连接正常。'});
+    info.textContent='✓ Webhook 已发送（no-cors 模式无法确认回执，请在群里查看）';
+    info.style.color='var(--gn)';
+  }catch(e){
+    info.textContent='✗ 发送失败: '+e.message;
+    info.style.color='var(--rd)';
+  }
+}
+
+// ═══════════════════════════════════════════
 //  CLOUD SYNC (GitHub Gist)
 // ═══════════════════════════════════════════
 let syncTimer=null;
@@ -1476,11 +1822,17 @@ async function syncPull(){
 }
 
 async function manualSync(){
-  if(!db.cfg.ghToken){showSettings();return}
-  const pulled=await syncPull();
-  await syncPush();
+  if(!db.cfg.ghToken&&!db.cfg.docSyncOn){showSettings();return}
+  setSyncState('syncing','正在同步...');
+  let pulled=false;
+  if(db.cfg.ghToken){
+    pulled=await syncPull();
+    await syncPush();
+  }
+  if(db.cfg.docSyncOn)await syncCloudDocs(true);
   if(pulled&&['daily','weekly','monthly'].includes(curTab))refresh();
   else if(pulled&&curTab==='cmd')renderCmd();
+  else setSyncState('synced','已同步');
 }
 
 async function testSync(){

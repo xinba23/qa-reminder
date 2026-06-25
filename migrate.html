@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>QA 工作台 - 数据迁移工具</title>
+<style>
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#0f1117;color:#e4e6ed;padding:40px;max-width:800px;margin:0 auto;line-height:1.8}
+h1{font-size:22px;margin-bottom:20px;background:linear-gradient(135deg,#6c8cff,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.card{background:#1a1d27;border:1px solid #2e3345;border-radius:12px;padding:20px;margin-bottom:16px}
+.card h3{font-size:15px;margin-bottom:8px}
+.found{color:#34d399}.notfound{color:#6b7280}
+pre{background:#242836;border-radius:8px;padding:12px;font-size:12px;overflow-x:auto;max-height:200px;overflow-y:auto;color:#9ca3b8;margin:8px 0}
+button{background:#6c8cff;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px;margin:8px 4px 8px 0}
+button:hover{opacity:.85}
+.btn2{background:#242836;color:#9ca3b8;border:1px solid #2e3345}
+textarea{width:100%;background:#242836;border:1px solid #2e3345;color:#e4e6ed;border-radius:8px;padding:12px;font-size:13px;min-height:120px;margin:8px 0;resize:vertical}
+.step{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:14px}
+.step .num{width:28px;height:28px;border-radius:50%;background:#6c8cff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.success{color:#34d399;font-weight:600;margin-top:12px}
+</style>
+</head>
+<body>
+<h1>QA 工作台 — 数据迁移工具</h1>
+
+<div class="card">
+  <h3>本地数据检测</h3>
+  <div id="detection"></div>
+</div>
+
+<div class="card">
+  <h3>合并后的数据</h3>
+  <p style="font-size:13px;color:#9ca3b8">以下是从本地浏览器找到的所有历史数据，已合并：</p>
+  <pre id="mergedData">检测中...</pre>
+  <button onclick="downloadJSON()">下载为 JSON 文件</button>
+  <button onclick="copyJSON()" class="btn2">复制到剪贴板</button>
+</div>
+
+<div class="card">
+  <h3>迁移到线上版本</h3>
+  <div class="step"><span class="num">1</span> 点击上方"下载为 JSON 文件"或"复制到剪贴板"</div>
+  <div class="step"><span class="num">2</span> 打开 <a href="https://xinba23.github.io/qa-reminder/" target="_blank" style="color:#6c8cff">https://xinba23.github.io/qa-reminder/</a></div>
+  <div class="step"><span class="num">3</span> 点击右上角 <b>↑ 导入</b>，选择刚才下载的 JSON 文件</div>
+  <div class="step"><span class="num">4</span> 导入完成后，配置云端同步（设置 → GitHub Token），以后数据就自动同步了</div>
+</div>
+
+<script>
+const KEYS = ['qa-reminder-state', 'qa-reminder-settings', 'qa-workbench', 'qa-wb-v2'];
+const merged = { entries:{}, resolved:{}, dismissed:{}, cfg:{} };
+let found = 0;
+
+const det = document.getElementById('detection');
+let detHtml = '';
+
+KEYS.forEach(key => {
+  const raw = localStorage.getItem(key);
+  if (raw) {
+    found++;
+    let size = (new Blob([raw]).size / 1024).toFixed(1);
+    detHtml += `<div class="found">✓ 找到 <b>${key}</b>（${size} KB）</div>`;
+
+    try {
+      const data = JSON.parse(raw);
+      
+      if (key === 'qa-reminder-state') {
+        // v1: checkbox-only, convert to entry format
+        for (const [k, v] of Object.entries(data)) {
+          if (v !== true) continue;
+          const m = k.match(/^(.+?)-(daily|weekly|monthly)-(\d+)-(\d+)$/);
+          if (!m) continue;
+          const [, dateP, tab, si, ii] = m;
+          let dk = '';
+          if (tab === 'daily') dk = 'D-' + dateP;
+          else if (tab === 'weekly') dk = 'W-' + dateP.replace(/^W-/, '');
+          else dk = 'M-' + dateP.replace(/^M-/, '');
+          if (!dk) continue;
+          if (!merged.entries[dk]) merged.entries[dk] = {};
+          const p = `${si}-${ii}`;
+          if (!merged.entries[dk][p]) merged.entries[dk][p] = {};
+          merged.entries[dk][p].done = true;
+        }
+      } else if (data.entries) {
+        for (const [k, v] of Object.entries(data.entries)) {
+          if (!merged.entries[k]) merged.entries[k] = v;
+          else {
+            for (const [p, d] of Object.entries(v)) {
+              const existing = merged.entries[k][p];
+              if (!existing) merged.entries[k][p] = d;
+              else if (d.text && (!existing.text || d.text.length > existing.text.length)) {
+                merged.entries[k][p] = d;
+              }
+            }
+          }
+        }
+        if (data.resolved) for (const [k, v] of Object.entries(data.resolved)) { if (!merged.resolved[k]) merged.resolved[k] = v; }
+        if (data.dismissed) for (const [k, v] of Object.entries(data.dismissed)) merged.dismissed[k] = v;
+        if (data.cfg) Object.assign(merged.cfg, data.cfg);
+      }
+    } catch(e) {
+      detHtml += `<div style="color:#f87171">  解析失败: ${e.message}</div>`;
+    }
+  } else {
+    detHtml += `<div class="notfound">✗ 未找到 ${key}</div>`;
+  }
+});
+
+const entryCount = Object.keys(merged.entries).length;
+detHtml += `<br><div style="font-size:14px"><b>共找到 ${found} 个数据源，合并后有 ${entryCount} 条记录</b></div>`;
+det.innerHTML = detHtml;
+
+const jsonStr = JSON.stringify(merged, null, 2);
+document.getElementById('mergedData').textContent = entryCount > 0 ? jsonStr.substring(0, 2000) + (jsonStr.length > 2000 ? '\n... (已截断显示)' : '') : '未找到任何历史数据';
+
+function downloadJSON() {
+  const blob = new Blob([jsonStr], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'qa-workbench-migrate.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function copyJSON() {
+  navigator.clipboard.writeText(jsonStr).then(() => {
+    alert('已复制到剪贴板！');
+  });
+}
+</script>
+</body>
+</html>
